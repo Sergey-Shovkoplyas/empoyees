@@ -1,17 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+import initialProps from './businessLogic/fixture/employees.json'; // todo temporary
+import employeesIdActive from './businessLogic/fixture/employeesActive.json'; // todo temporary
+
+
+import EmployeesEntity from './entities/Employer'
+
+import View from './view/Employees';
+import Model from './businessLogic/Employees';
+import Repository from './businessLogic/Repository';
+
+import "./styles/Employees.scss"
+
+let model = new Model({
+    dependencies: {
+        Repository: new Repository(),
+        EmployeesEntity
+    }
+});
+
+// let initialProps = model.getInitialProps().then((result) => console.log(result));
+let normalizeInitialProps = model.normalizeInitialProps({employees: initialProps}); // todo temporary
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <View initialData={{employees: normalizeInitialProps.employees, employeesIdActive: employeesIdActive}}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
